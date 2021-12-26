@@ -1261,6 +1261,7 @@ class CharacterEditorState extends MusicBeatState
 		var data:String = Json.stringify(json, "\t");
 		
 		openfl.system.System.setClipboard(data.trim());
+                AndroidTools.openFileManager(Main.getDataPatb());//Testing
 	}
 
 	function ClipboardAdd(prefix:String = ''):String {
