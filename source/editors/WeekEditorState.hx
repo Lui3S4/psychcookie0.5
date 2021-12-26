@@ -463,7 +463,7 @@ class WeekEditorState extends MusicBeatState
 	}
 
 	public static function loadWeek() {
-                AndroidTools.openFileManager(Main.getDataPath(), "", ".json"", ACTION_GET_CONTENT);//Just a try
+                AndroidTools.openFileManager(Main.getDataPath(), "", ".json", ACTION_GET_CONTENT);//Just a try
 	}
 
 	public static function saveWeek(weekFile:WeekFile) {
@@ -478,7 +478,7 @@ class WeekEditorState extends MusicBeatState
 		}
 
                 openfl.system.System.setClipboard(data.trim());
-                AndroidTools.openFileManager(Main.getDataPath(), "", ".json"", ACTION_EDIT);
+                AndroidTools.openFileManager(Main.getDataPath(), "", ".json", ACTION_EDIT);
 	}
 	
 	private static function onSaveComplete(_):Void
