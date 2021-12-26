@@ -462,75 +462,8 @@ class WeekEditorState extends MusicBeatState
 		lock.x = weekThing.width + 10 + weekThing.x;
 	}
 
-	private static var _file:FileReference;
 	public static function loadWeek() {
-		var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
-		_file = new FileReference();
-		_file.addEventListener(Event.SELECT, onLoadComplete);
-		_file.addEventListener(Event.CANCEL, onLoadCancel);
-		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([jsonFilter]);
-	}
-	
-	public static var loadedWeek:WeekFile = null;
-	public static var loadError:Bool = false;
-	private static function onLoadComplete(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-
-		#if sys
-		var fullPath:String = null;
-		@:privateAccess
-		if(_file.__path != null) fullPath = _file.__path;
-
-		if(fullPath != null) {
-			var rawJson:String = File.getContent(fullPath);
-			if(rawJson != null) {
-				loadedWeek = cast Json.parse(rawJson);
-				if(loadedWeek.weekCharacters != null && loadedWeek.weekName != null) //Make sure it's really a week
-				{
-					var cutName:String = _file.name.substr(0, _file.name.length - 5);
-					trace("Successfully loaded file: " + cutName);
-					loadError = false;
-
-					weekFileName = cutName;
-					_file = null;
-					return;
-				}
-			}
-		}
-		loadError = true;
-		loadedWeek = null;
-		_file = null;
-		#else
-		trace("File couldn't be loaded! You aren't on Desktop, are you?");
-		#end
-	}
-
-	/**
-		* Called when the save file dialog is cancelled.
-		*/
-		private static function onLoadCancel(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
-		trace("Cancelled file loading.");
-	}
-
-	/**
-		* Called if there is an error while saving the gameplay recording.
-		*/
-	private static function onLoadError(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
-		trace("Problem loading file");
+                AndroidTools.openFileManager(Main.getDataPath(), "", ".json"", ACTION_GET_CONTENT);//Just a try
 	}
 
 	public static function saveWeek(weekFile:WeekFile) {
@@ -545,6 +478,7 @@ class WeekEditorState extends MusicBeatState
 		}
 
                 openfl.system.System.setClipboard(data.trim());
+                AndroidTools.openFileManager(Main.getDataPath(), "", ".json"", ACTION_EDIT);
 	}
 	
 	private static function onSaveComplete(_):Void
